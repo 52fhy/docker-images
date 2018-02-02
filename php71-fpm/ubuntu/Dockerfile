@@ -1,4 +1,4 @@
-FROM daocloud.io/ubuntu
+FROM daocloud.io/ubuntu:16.04
 
 MAINTAINER linuxidc "yujc@52fhy.com"
 
