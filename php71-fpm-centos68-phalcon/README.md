@@ -1,12 +1,12 @@
 
-# php56-fpm-centos68
+# php71-fpm-centos68-phalcon
 
-基于 centos:6.8 镜像。
+基于自行编译的 php71-fpm-centos68 镜像，父镜像是 centos:6.8。
 
-php5.6的开发环境。包含：
+php7.1-phalcon的开发环境。包含：
 
 - CentOS 6.8
-- PHP 5.6.33
+- PHP 7.1.12
 - php-fpm
 - Nginx 1.12.2
 - Redis 3.2.6
@@ -14,8 +14,16 @@ php5.6的开发环境。包含：
 包含的PHP附加扩展：
 
 - swoole 1.10.1
-- phpredis 3.1.2
-- yar 1.2.5
+- phpredis 3.0.0
+- yar 2.0.2
+- phpalcon 3.3.1
+- xhprof_tideways 4.1.5
+- msgpack
+- protobuf
+- yaconf
+- mongodb
+- seaslog
+- gearman 1.1.18
 
 相关目录：
 
@@ -26,13 +34,14 @@ php5.6的开发环境。包含：
 - nginx可执行程序目录：/usr/local/nginx/sbin/
 - nginx配置目录：/usr/local/nginx/conf/
 
+其中gearman比较难编译，依赖libgearman.so.8库。
+
 ## 如何使用
 
 1、首次使用需要先编译成镜像：
 
 ``` bash
-cp -rf ../php70-fpm-centos68/*gz ./
-docker build -t php56-fpm-centos68 .
+docker build -t php71-fpm-centos68-phalcon .
 ```
 或者执行bulid.sh。
 
@@ -41,7 +50,7 @@ docker build -t php56-fpm-centos68 .
 2、编译完成后可以创建容器了。默认会自动启动Nginx、php-fpm服务：
 
 ``` bash
-docker run -d --name yphp -p 80:80 -p 9000:9000 -v /work/:/work/ php56-fpm-centos68
+docker run -d --name yphp -p 80:80 -p 9000:9000 -v /work/:/work/ php71-fpm-centos68
 docker ps
 ```
 
@@ -51,7 +60,7 @@ docker ps
 
 ```
 CONTAINER ID 	IMAGE    		COMMAND 	CREATED 		STATUS 			PORTS 										NAMES
-db13127cb76b php56-fpm-centos68  "/run.sh"   1 second ago  Up 1 second   0.0.0.0:80->80/tcp, 0.0.0.0:9000->9000/tcp   yphp
+db13127cb76b php71-fpm-centos68  "/run.sh"   1 second ago  Up 1 second   0.0.0.0:80->80/tcp, 0.0.0.0:9000->9000/tcp   yphp
 ```
 表名容器正则运行。如果`STATUS`是Exit(1)则说明容器异常退出，如果Exit(0)说明容器只执行了命令就立即退出了。
 可以使用`docker logs db13127cb76b` 查看容器具体退出情况。db13127cb76b是某个容器ID（CONTAINER ID）。
@@ -64,7 +73,7 @@ docker run -d --name yphp -p 80:80 -p 9000:9000 \
 	-v "/work/yphp/php/etc/":/usr/local/php/etc/  \
 	-v "/work/yphp/nginx/conf/":/usr/local/nginx/conf/  \
 	-v "/work/yphp/nginx/logs/":/usr/local/nginx/logs/  \
-	php56-fpm-centos68 
+	php71-fpm-centos68 
 ```
 
 其中`/work/yphp`是本地宿主机的一个目录，里面包含php和nginx的配置，目录结构：
@@ -88,12 +97,12 @@ docker run -d --name yphp -p 80:80 -p 9000:9000 \
 	-v "/work/yphp/nginx/conf/nginx.conf":/usr/local/nginx/conf/nginx.conf  \
 	-v "/work/yphp/nginx/conf/vhost/":/usr/local/nginx/conf/vhost/  \
 	-v "/work/yphp/nginx/logs/":/usr/local/nginx/logs/  \
-	php56-fpm-centos68
+	php71-fpm-centos68
 ```
 
 4、如果不需要一开始就运行服务，想进入容器自行启动，可以直接进入容器：
 ``` bash
-docker run -it --name yphp -v /work/:/work/ php56-fpm-centos68 /bin/bash
+docker run -it --name yphp -v /work/:/work/ php71-fpm-centos68 /bin/bash
 ```
 
 退出容器使用exit。
@@ -102,10 +111,10 @@ docker run -it --name yphp -v /work/:/work/ php56-fpm-centos68 /bin/bash
 ``` bash
 # 从容器生成镜像
 # -m 加一些改动信息，-a 指定作者相关信息，db13127cb76b这一串为容器id，再后面为新镜像的名字
-docker commit -m "create images" -a "52fhy"  db13127cb76b  php56-fpm-centos68:yphp_v1 
+docker commit -m "create images" -a "52fhy"  db13127cb76b  php71-fpm-centos68:yphp_v1 
 
 # 导出镜像
-docker save -o yphp.tar php56-fpm-centos68:yphp_v1
+docker save -o yphp.tar php71-fpm-centos68:yphp_v1
 
 # 导入镜像
 docker load --input yphp.tar
