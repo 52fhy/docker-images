@@ -18,9 +18,9 @@ ip=$(/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6 | awk '{print $
 function init(){
 	docker run -d --name ysphp -p 9001:9000 -p 8082:80 \
 	 -v /work/:/work/  \
-	 -v "/work/ysconf/php/etc/":/usr/local/php/etc/  \
-	 -v "/work/ysconf/nginx/conf/":/usr/local/nginx/conf/  \
-	 -v "/work/ysconf/nginx/logs/":/usr/local/nginx/logs/  \
+	 -v "/work/yphp/php/etc/":/usr/local/php/etc/  \
+	 -v "/work/yphp/nginx/conf/":/usr/local/nginx/conf/  \
+	 -v "/work/yphp/nginx/logs/":/usr/local/nginx/logs/  \
 	 php71-fpm-centos68-phalcon-withext && docker ps -a
 
 	echo "Installation success, enjoy yourself!"
@@ -42,8 +42,8 @@ function rm_a(){
 }
 
 function rm_all(){
-	docker rm $cid  
-	docker start $cid 
+	docker ps -a | awk '{print $1}' |xargs docker stop
+	docker ps -a | awk '{print $1}' |xargs docker rm 
 }
 
 function nginx_reload(){
