@@ -66,6 +66,7 @@ RUN wget -O /php-${PHP_VERSION}.tar.bz2 "$PHP_URL" \
     && make clean && yum clean all  && cd - && rm -rf /php-${PHP_VERSION}* \
 	&& sed -i "s/;date.timezone =/date.timezone =PRC/" /usr/local/php/etc/php.ini
 
+RUN useradd www
 
 #RUN wget -O /nginx-${NGINX_VERSION}.tar.gz http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
 RUN echo 'install nginx' \
