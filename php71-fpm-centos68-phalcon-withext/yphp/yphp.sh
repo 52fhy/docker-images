@@ -16,7 +16,7 @@ ip=$(/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6 | awk '{print $
 
 
 function init(){
-	docker run -d --name ysphp -p 9001:9000 -p 8082:80 \
+	docker run -d --restart=always --name ysphp  -p 9001:9000 -p 8082:80 \
 	 -v /work/:/work/  \
 	 -v "/work/yphp/php/etc/":/usr/local/php/etc/  \
 	 -v "/work/yphp/nginx/conf/":/usr/local/nginx/conf/  \
