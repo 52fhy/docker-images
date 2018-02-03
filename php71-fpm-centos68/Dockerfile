@@ -62,6 +62,7 @@ RUN wget -O /php-${PHP_VERSION}.tar.bz2 "$PHP_URL" \
     && cp php.ini-production php.ini \
     && cp php.ini* /usr/local/php/etc/ \
     && cp /usr/local/php/etc/php-fpm.conf.default  /usr/local/php/etc/php-fpm.conf \
+    && cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf \
     && make clean && yum clean all  && cd - && rm -rf /php-${PHP_VERSION}* \
 	&& sed -i "s/;date.timezone =/date.timezone =PRC/" /usr/local/php/etc/php.ini
 
@@ -118,7 +119,7 @@ RUN echo 'install redis' \
 	&& mkdir /usr/local/redis \
 	&& cp redis.conf /usr/local/redis/ \
 	&& cd src && cp  redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-sentinel redis-server redis-trib.rb /usr/local/redis \
-    && cd ../ && rm -rf redis-${REDIS_VER}*
+    && cd / && rm -rf redis-${REDIS_VER}*
 
 ADD ./run.sh /run.sh
 RUN chmod 755 /run.sh

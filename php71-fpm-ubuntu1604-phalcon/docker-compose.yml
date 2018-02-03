@@ -1,0 +1,15 @@
+# development.yml
+version: '2'
+services:
+  php-fpm:
+    image: php71-fpm-ubuntu1604-phalcon:1.0
+    restart: always
+    volumes:
+      - /work/:/work/
+      #- /work/dockerp/php71-fpm/nginx/conf/nginx.conf:/usr/local/nginx/conf/nginx.conf
+      #- /work/dockerp/php71-fpm/nginx/conf/vhosts/:/usr/local/nginx/conf/vhosts/
+      #- /work/dockerp/php71-fpm/nginx/data/:/var/log/nginx/
+    ports:
+      - 9001:9000
+      - 8002:80
+    command: ps -ef
