@@ -24,13 +24,16 @@ RUN echo "extension=msgpack.so" >> "$PHP_INI_FILE" && \
 	echo "extension=tideways.so" >> "$PHP_INI_FILE" && \
 	echo "extension=gearman.so" >> "$PHP_INI_FILE"
 
-ADD ./run.sh /run.sh
-RUN chmod 755 /run.sh
+# fix fpm 
+RUN useradd www && cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf 
 
-CMD /run.sh && tail -f
+ADD ./run.sh /run.sh
+RUN chmod +x /run.sh
 
 EXPOSE 80
 EXPOSE 9000
+
+CMD ["/run.sh"]
 
 #docker build -t php71-fpm-centos68-phalcon-withext .
 
