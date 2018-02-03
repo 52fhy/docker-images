@@ -1,4 +1,2 @@
 #!/bin/bash
-nginx
-php-fpm
-ps -ef
+nginx && php-fpm7.1 && ps -ef
