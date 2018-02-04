@@ -4,7 +4,7 @@ FROM daocloud.io/centos:6.8
 MAINTAINER yjc@52fhy.com
 
 # php
-ENV PHP_VERSION 5.6.33
+ENV PHP_VERSION 7.1.12
 ENV PHP_URL="http://cn2.php.net/distributions/php-${PHP_VERSION}.tar.bz2"
 
 # nginx
@@ -15,25 +15,9 @@ ENV REDIS_VER 3.2.6
 
 # php-ext	
 ENV SWOOLE_VER 1.10.1
-# https://github.com/swoole/swoole-src/archive/v1.10.1.tar.gz
-
-ENV PHPREDIS_VER 3.1.2
-# php5 need yar < 2.0
-ENV YAR_VER 1.2.5
+ENV PHPREDIS_VER 3.1.6
+ENV YAR_VER 2.0.4
 ENV PHP_INI_FILE="/usr/local/php/etc/php.ini"
-
-COPY libmcrypt-2.5.8.tar.gz /libmcrypt-2.5.8.tar.gz
-COPY mcrypt-2.6.8.tar.gz /mcrypt-2.6.8.tar.gz
-COPY mhash-0.9.9.9.tar.gz /mhash-0.9.9.9.tar.gz
-
-COPY nginx-${NGINX_VERSION}.tar.gz /nginx-${NGINX_VERSION}.tar.gz
-
-COPY swoole-src-${SWOOLE_VER}.tar.gz /${SWOOLE_VER}.tar.gz
-
-
-COPY redis-${REDIS_VER}.tar.gz /redis-${REDIS_VER}.tar.gz
-COPY phpredis-${PHPREDIS_VER}.tar.gz /phpredis-${PHPREDIS_VER}.tar.gz
-COPY yar-${YAR_VER}.tgz /yar-${YAR_VER}.tgz
 
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -50,11 +34,12 @@ RUN yum install -y gcc gcc-c++ bison autoconf wget lrzsz \
     && yum install -y pcre-devel \
     && yum clean all
 
-#   RUN wget -O /libmcrypt-2.5.8.tar.gz ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/libmcrypt/libmcrypt-2.5.7.tar.gz \
-RUN tar zxvf /libmcrypt-2.5.8.tar.gz \
-    && cd /libmcrypt-2.5.8 && ./configure && make && make install && cd - / && rm -rf /libmcrypt* \
-    && tar zxvf /mhash-0.9.9.9.tar.gz && cd mhash-0.9.9.9 && ./configure && make && make install && cd - / && rm -rf /mhash* \
-    && tar zxvf /mcrypt-2.6.8.tar.gz && cd mcrypt-2.6.8 && LD_LIBRARY_PATH=/usr/local/lib ./configure && make && make install && cd - / && rm -rf /mcrypt* 
+RUN wget -O /libmcrypt-2.5.7.tar.gz ftp://mcrypt.hellug.gr/pub/crypto/mcrypt/libmcrypt/libmcrypt-2.5.7.tar.gz \
+	&& wget -O /mcrypt-2.6.8.tar.gz https://jaist.dl.sourceforge.net/project/mcrypt/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz \
+	&& wget -O /mhash-0.9.9.9.tar.gz https://jaist.dl.sourceforge.net/project/mhash/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz \
+	&& tar zxvf /libmcrypt-2.5.7.tar.gz && cd /libmcrypt-2.5.7 && ./configure && make && make install && cd - / && rm -rf /libmcrypt* \
+	&& tar zxvf /mhash-0.9.9.9.tar.gz && cd mhash-0.9.9.9 && ./configure && make && make install && cd - / && rm -rf /mhash* \
+	&& tar zxvf /mcrypt-2.6.8.tar.gz && cd mcrypt-2.6.8 && LD_LIBRARY_PATH=/usr/local/lib ./configure && make && make install && cd - / && rm -rf /mcrypt* 
 	
 RUN wget -O /php-${PHP_VERSION}.tar.bz2 "$PHP_URL" \
     && tar jxvf /php-${PHP_VERSION}.tar.bz2 && cd php-${PHP_VERSION}/ \
@@ -63,14 +48,18 @@ RUN wget -O /php-${PHP_VERSION}.tar.bz2 "$PHP_URL" \
     && cp php.ini-production php.ini \
     && cp php.ini* /usr/local/php/etc/ \
     && cp /usr/local/php/etc/php-fpm.conf.default  /usr/local/php/etc/php-fpm.conf \
+    && cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf \
     && make clean && yum clean all  && cd - && rm -rf /php-${PHP_VERSION}* \
-	&& ln -sf /usr/local/php/bin/* /usr/bin/ \
+	&& ln -s /usr/local/php/bin/php /usr/bin/php \
+	&& ln -s /usr/local/php/bin/phpize /usr/bin/phpize \
+	&& ln -s /usr/local/php/bin/php-config /usr/bin/php-config \
+	&& ln -s /usr/local/php/bin/pecl /usr/bin/pecl \
 	&& sed -i "s/;date.timezone =/date.timezone =PRC/" /usr/local/php/etc/php.ini
 
 RUN useradd www
 
-#RUN wget -O /nginx-${NGINX_VERSION}.tar.gz http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
-RUN echo 'install nginx' \
+RUN wget -O /nginx-${NGINX_VERSION}.tar.gz http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
+	&& echo 'install nginx' \
     && tar zxvf /nginx-${NGINX_VERSION}.tar.gz && cd nginx-${NGINX_VERSION} \
     && ./configure \
     --prefix=/usr/local/nginx \
@@ -84,34 +73,25 @@ RUN echo 'install nginx' \
     && ln -sf /usr/local/nginx/sbin/nginx /usr/bin  \
     && make clean && yum clean all \
     && cd ../ && rm -rf nginx-${NGINX_VERSION}*
-
-#RUN wget https://github.com/swoole/swoole-src/archive/swoole-src-${SWOOLE_VER}.tar.gz \
-RUN echo 'install swoole' \
-    && tar xzf /${SWOOLE_VER}.tar.gz && cd swoole-src-${SWOOLE_VER} \
-	&& phpize && ./configure && make && make install \
-	&& echo "extension=swoole.so" >> "$PHP_INI_FILE" \
-    && cd ../ && rm -rf swoole-src-${SWOOLE_VER}*
-
 	
-RUN /usr/local/php/bin/pecl install redis && \
-	echo "extension=redis.so" >> "$PHP_INI_FILE"
-	
-RUN echo 'install yar' \
-    && tar xzf /yar-${YAR_VER}.tgz && cd yar-${YAR_VER}/ \
-	&& phpize \
-    && ./configure \
-    && make && make install \
-	&& echo "extension=yar.so" >> "$PHP_INI_FILE" \
-    && cd ../ && rm -rf yar-${YAR_VER}*
-	
-#RUN wget http://download.redis.io/releases/redis-${REDIS_VER}.tar.gz -O /redis-${REDIS_VER}.tar.gz \
-RUN echo 'install redis' \
+RUN wget http://download.redis.io/releases/redis-${REDIS_VER}.tar.gz \
+	&& echo 'install redis' \
     && tar xzf /redis-${REDIS_VER}.tar.gz && cd redis-${REDIS_VER} \
     && make \
 	&& mkdir /usr/local/redis \
 	&& cp redis.conf /usr/local/redis/ \
 	&& cd src && cp  redis-benchmark redis-check-aof redis-check-rdb redis-cli redis-sentinel redis-server redis-trib.rb /usr/local/redis \
-    && cd / && rm -rf redis-${REDIS_VER}*
+    && cd / && rm -rf redis-${REDIS_VER}*	
+
+RUN wget http://pecl.php.net/get/redis-${PHPREDIS_VER}.tgz && tar xvf redis-${PHPREDIS_VER}.tgz && cd redis-${PHPREDIS_VER} && phpize  && ./configure  && make && make install && cd ../ && rm -rf redis-*
+
+RUN wget http://pecl.php.net/get/swoole-${SWOOLE_VER}.tgz && tar xvf swoole-${SWOOLE_VER}.tgz && cd swoole-${SWOOLE_VER} && phpize  && ./configure  && make && make install && cd ../ && rm -rf swoole-*
+
+RUN wget http://pecl.php.net/get/yar-${YAR_VER}.tgz && tar xvf yar-${YAR_VER}.tgz && cd yar-${YAR_VER} && phpize  && ./configure  && make && make install && cd ../ && rm -rf yar-*
+
+RUN echo "extension=redis.so" >> "$PHP_INI_FILE" && \
+	echo "extension=swoole.so" >> "$PHP_INI_FILE" && \
+	echo "extension=yar.so" >> "$PHP_INI_FILE"
 
 ADD ./run.sh /run.sh
 RUN chmod 755 /run.sh
@@ -121,5 +101,5 @@ CMD /run.sh && tail -f
 EXPOSE 80
 EXPOSE 9000
 
-#docker build -t php56-fpm-centos68 .
+#docker build -t php71-fpm-centos68 .
 
