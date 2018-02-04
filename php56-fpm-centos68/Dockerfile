@@ -63,7 +63,6 @@ RUN wget -O /php-${PHP_VERSION}.tar.bz2 "$PHP_URL" \
     && cp php.ini-production php.ini \
     && cp php.ini* /usr/local/php/etc/ \
     && cp /usr/local/php/etc/php-fpm.conf.default  /usr/local/php/etc/php-fpm.conf \
-	&& cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf \
     && make clean && yum clean all  && cd - && rm -rf /php-${PHP_VERSION}* \
 	&& sed -i "s/;date.timezone =/date.timezone =PRC/" /usr/local/php/etc/php.ini
 
