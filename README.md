@@ -1,69 +1,69 @@
 # docker-images
 
-±¾²Ö¿âÎª×Ô¶¨Òå¼°ÊÕ²ØµÄÒ»Ğ©¾µÏñ£¬·½±ãÊ¹ÓÃ¡£°üº¬PHP5¡¢PHP7¿ª·¢»·¾³µÈ¾µÏñ¡£
+æœ¬ä»“åº“ä¸ºè‡ªå®šä¹‰åŠæ”¶è—çš„ä¸€äº›é•œåƒï¼Œæ–¹ä¾¿ä½¿ç”¨ã€‚åŒ…å«PHP5ã€PHP7å¼€å‘ç¯å¢ƒç­‰é•œåƒã€‚
 
 
-## Docker³£ÓÃÃüÁî
+## Dockerå¸¸ç”¨å‘½ä»¤
 
 ``` bash
-# ÏÂÔØ¾µÏñ
+# ä¸‹è½½é•œåƒ
 docker pull IMAGE[:TAG]
 docker pull daocloud.io/centos:6.8
 
-# ²é¿´ÒÑÏÂÔØ¾µÏñÁĞ±í
+# æŸ¥çœ‹å·²ä¸‹è½½é•œåƒåˆ—è¡¨
 docker images [-a]
 
-# ¸ø¾µÏñÌí¼Ó±êÇ©
+# ç»™é•œåƒæ·»åŠ æ ‡ç­¾
 docker tag  IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
 dcoker tag daocloud.io/centos:6.8 centos:6.8
 
-# É¾³ı¾µÏñ£º±ØĞëÏÈÉ¾³ıÒÀÀµ¸Ã¾µÏñµÄÈİÆ÷²ÅÄÜÉ¾³ı¾µÏñ
+# åˆ é™¤é•œåƒï¼šå¿…é¡»å…ˆåˆ é™¤ä¾èµ–è¯¥é•œåƒçš„å®¹å™¨æ‰èƒ½åˆ é™¤é•œåƒ
 docker rmi [OPTIONS] IMAGE [IMAGE...]
 
-# ´´½¨²¢ÔËĞĞÈİÆ÷
+# åˆ›å»ºå¹¶è¿è¡Œå®¹å™¨
 docker run [OPTIONS] IMAGE [COMMOND] [ARG...]
 docker run -it daocloud.io/centos:6.8 /bin/bash
 
-# Æô¶¯ÈİÆ÷
+# å¯åŠ¨å®¹å™¨
 docker start CONTAINER_ID
 
-# Í£Ö¹ÈİÆ÷
+# åœæ­¢å®¹å™¨
 docker stop CONTAINER_ID 
 
-# É¾³ıÈİÆ÷
+# åˆ é™¤å®¹å™¨
 docker rm CONTAINER_ID 
 
-# Ö´ĞĞÈİÆ÷ÄÚÃüÁî
+# æ‰§è¡Œå®¹å™¨å†…å‘½ä»¤
 docker exec [-d] [-i] [-t] CONTAINER_ID  [COMMOND] [ARG...]
 docker exec -it 4b5634aaef69 /bin/bash
 docker exec 4b5634aaef69 ps -ef
 docker exec 4b5634aaef69 nginx -s reload
 
-# µ¼³ö¾µÏñ
+# å¯¼å‡ºé•œåƒ
 docker save [OPTIONS] IMAGE [IMAGE...]
 docker save -o ubuntu_latest.tar ubuntu:latest
 
-# µ¼Èë¾µÏñ
+# å¯¼å…¥é•œåƒ
 docker load --input ubuntu_latest.tar
 docker load < ubuntu_latest.tar
 ```
 
-## ¾µÏñ²Ö¿â
+## é•œåƒä»“åº“
 
 - https://hub.docker.com/explore/
 - https://dashboard.daocloud.io/
 - https://c.163.com/
 
-## ¾µÏñ¼ÓËÙÆ÷
+## é•œåƒåŠ é€Ÿå™¨
 
-1¡¢¼ÓËÙÆ÷ DaoCloud - Òµ½çÁìÏÈµÄÈİÆ÷ÔÆÆ½Ì¨  
+1ã€åŠ é€Ÿå™¨ DaoCloud - ä¸šç•Œé¢†å…ˆçš„å®¹å™¨äº‘å¹³å°  
 https://www.daocloud.io/mirror#accelerator-doc
 
-2¡¢¾µÏñ¼ÓËÙ | Docker ÖĞ¹ú  
+2ã€é•œåƒåŠ é€Ÿ | Docker ä¸­å›½  
 https://www.docker-cn.com/registry-mirror
 
-## Ñ§Ï°×ÊÁÏ
+## å­¦ä¹ èµ„æ–™
 
-1¡¢Docker - Ëæ±Ê·ÖÀà - ·ÉºèÓ°~ - ²©¿ÍÔ°  
+1ã€Docker - éšç¬”åˆ†ç±» - é£é¸¿å½±~ - åšå®¢å›­  
 http://www.cnblogs.com/52fhy/category/895062.html
 
