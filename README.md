@@ -5,24 +5,27 @@
 
 ## Docker常用命令
 
-```
+``` bash
 # 下载镜像
 docker pull IMAGE[:TAG]
+docker pull daocloud.io/centos:6.8
 
 # 查看已下载镜像列表
 docker images [-a]
 
 # 给镜像添加标签
 docker tag  IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]
+dcoker tag daocloud.io/centos:6.8 centos:6.8
 
 # 删除镜像：必须先删除依赖该镜像的容器才能删除镜像
 docker rmi [OPTIONS] IMAGE [IMAGE...]
 
 # 创建并运行容器
-docker run [OPTIONS] IMAGE
+docker run [OPTIONS] IMAGE [COMMOND] [ARG...]
+docker run -it daocloud.io/centos:6.8 /bin/bash
 
 # 启动容器
-docker start CONTAINER_ID  [COMMOND] [ARG...]
+docker start CONTAINER_ID
 
 # 停止容器
 docker stop CONTAINER_ID 
@@ -32,9 +35,17 @@ docker rm CONTAINER_ID
 
 # 执行容器内命令
 docker exec [-d] [-i] [-t] CONTAINER_ID  [COMMOND] [ARG...]
+docker exec -it 4b5634aaef69 /bin/bash
+docker exec 4b5634aaef69 ps -ef
+docker exec 4b5634aaef69 nginx -s reload
 
-# 执行容器内命令
-docker attach   CONTAINER_ID  [COMMOND] [ARG...]
+# 导出镜像
+docker save [OPTIONS] IMAGE [IMAGE...]
+docker save -o ubuntu_latest.tar ubuntu:latest
+
+# 导入镜像
+docker load --input ubuntu_latest.tar
+docker load < ubuntu_latest.tar
 ```
 
 ## 镜像仓库
