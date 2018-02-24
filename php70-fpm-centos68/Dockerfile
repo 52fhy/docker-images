@@ -65,6 +65,8 @@ RUN wget -O /php-${PHP_VERSION}.tar.bz2 "$PHP_URL" \
     && cp /usr/local/php/etc/php-fpm.conf.default  /usr/local/php/etc/php-fpm.conf \
 	&& cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf \
     && make clean && yum clean all  && cd - && rm -rf /php-${PHP_VERSION}* \
+    && ln -sf /usr/local/php/bin/* /usr/bin/ \
+    && ln -sf /usr/local/php/sbin/* /usr/bin/ \	
 	&& sed -i "s/;date.timezone =/date.timezone =PRC/" /usr/local/php/etc/php.ini
 
 RUN useradd www
@@ -88,9 +90,6 @@ RUN echo 'install nginx' \
 #RUN wget https://github.com/swoole/swoole-src/archive/swoole-src-${SWOOLE_VER}.tar.gz \
 RUN echo 'install swoole' \
     && tar xzf /${SWOOLE_VER}.tar.gz && cd swoole-src-${SWOOLE_VER} \
-	&& ln -s /usr/local/php/bin/php /usr/bin/php \
-	&& ln -s /usr/local/php/bin/phpize /usr/bin/phpize \
-	&& ln -s /usr/local/php/bin/php-config /usr/bin/php-config \
 	&& phpize \
     && ./configure \
     && make && make install \

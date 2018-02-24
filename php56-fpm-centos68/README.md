@@ -32,11 +32,17 @@ php5.6的开发环境。包含：
 
 ``` bash
 cp -rf ../php70-fpm-centos68/*gz ./
-docker build -t php56-fpm-centos68 .
+c
 ```
 或者执行bulid.sh。
 
 编译需要30分钟左右。实际视机器性能而定。
+
+如果不能COPY当前目录的已下载文件，那么可以指定 Dockerfile_online ：
+``` bash
+docker build -t php56-fpm-centos68 -f  Dockerfile_online .
+```
+该Dockerfile会联网下载所需要的资源。
 
 2、编译完成后可以创建容器了。默认会自动启动Nginx、php-fpm服务：
 

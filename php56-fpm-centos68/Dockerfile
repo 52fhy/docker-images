@@ -55,7 +55,8 @@ RUN tar zxvf /libmcrypt-2.5.8.tar.gz \
     && cd /libmcrypt-2.5.8 && ./configure && make && make install && cd - / && rm -rf /libmcrypt* \
     && tar zxvf /mhash-0.9.9.9.tar.gz && cd mhash-0.9.9.9 && ./configure && make && make install && cd - / && rm -rf /mhash* \
     && tar zxvf /mcrypt-2.6.8.tar.gz && cd mcrypt-2.6.8 && LD_LIBRARY_PATH=/usr/local/lib ./configure && make && make install && cd - / && rm -rf /mcrypt* 
-	
+
+# install php	
 RUN wget -O /php-${PHP_VERSION}.tar.bz2 "$PHP_URL" \
     && tar jxvf /php-${PHP_VERSION}.tar.bz2 && cd php-${PHP_VERSION}/ \
     && ./configure --prefix=/usr/local/php --with-config-file-scan-dir=/usr/local/php/etc/ --enable-inline-optimization --enable-opcache --enable-session --enable-fpm --with-fpm-user=www --with-fpm-group=www --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --with-gettext --enable-mbregex --enable-mbstring --enable-xml --with-iconv --with-mcrypt --with-mhash --with-openssl --enable-bcmath --enable-soap --with-xmlrpc --with-libxml-dir --enable-pcntl --enable-shmop --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-sockets --with-curl --with-curlwrappers --with-zlib --enable-zip --with-bz2 --with-gd --enable-gd-native-ttf --with-jpeg-dir --with-png-dir --with-freetype-dir --with-iconv-dir --with-readline \
@@ -65,6 +66,7 @@ RUN wget -O /php-${PHP_VERSION}.tar.bz2 "$PHP_URL" \
     && cp /usr/local/php/etc/php-fpm.conf.default  /usr/local/php/etc/php-fpm.conf \
     && make clean && yum clean all  && cd - && rm -rf /php-${PHP_VERSION}* \
 	&& ln -sf /usr/local/php/bin/* /usr/bin/ \
+    && ln -sf /usr/local/php/sbin/* /usr/bin/ \	
 	&& sed -i "s/;date.timezone =/date.timezone =PRC/" /usr/local/php/etc/php.ini
 
 RUN useradd www

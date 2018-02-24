@@ -12,8 +12,6 @@ ENV PHALCON_VERSION 3.3.1
 ENV XHPROF_VERSION 4.1.5
 
 RUN yum -y install git
-RUN ln -s /usr/local/php/bin/pecl /usr/bin/ && \
-	ln -s /usr/local/php/sbin/php-fpm /usr/bin/	
 
 # php-ext	
 RUN pecl install memcache  protobuf  mongodb seaslog
@@ -57,8 +55,6 @@ RUN echo "extension=msgpack.so" >> "$PHP_INI_FILE" && \
 	echo "extension=tideways.so" >> "$PHP_INI_FILE" && \
 	echo "extension=libevent.so" >> "$PHP_INI_FILE" && \
 	echo "extension=gearman.so" >> "$PHP_INI_FILE"
-
-RUN useradd www
 	
 ADD ./run.sh /run.sh
 RUN chmod 755 /run.sh

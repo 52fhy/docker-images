@@ -12,8 +12,6 @@ ENV PHALCON_VERSION 3.3.1
 ENV XHPROF_VERSION 4.1.5
 
 RUN yum -y install git
-RUN ln -s /usr/local/php/bin/pecl /usr/bin/ && \
-	ln -s /usr/local/php/sbin/php-fpm /usr/bin/	
 
 # php-ext	
 RUN pecl install msgpack protobuf yaconf mongodb seaslog

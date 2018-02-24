@@ -3,8 +3,6 @@ FROM php56-fpm-centos68
 MAINTAINER yjc@52fhy.com
 
 # RUN yum -y install git
-RUN ln -s /usr/local/php/bin/pecl /usr/bin/ && \
-	ln -s /usr/local/php/sbin/php-fpm /usr/bin/	
 
 ADD libgearman.tar.gz /usr/local/lib/
 RUN ln -s /usr/local/lib/libgearman.so.8.0.0 /usr/local/lib/libgearman.so && \
@@ -22,9 +20,6 @@ RUN echo "extension=msgpack.so" >> "$PHP_INI_FILE" && \
 	echo "extension=gearman.so" >> "$PHP_INI_FILE"
 
 #RUN yum -y install libevent-devel && echo "extension=libevent.so" >> "$PHP_INI_FILE"
-
-# fix fpm 
-RUN useradd www
 
 ADD ./run.sh /run.sh
 RUN chmod +x /run.sh

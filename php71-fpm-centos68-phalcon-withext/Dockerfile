@@ -7,8 +7,6 @@ ENV PHP_VERSION 7.1.12
 ENV PHP_URL="http://cn2.php.net/distributions/php-${PHP_VERSION}.tar.bz2"
 
 # RUN yum -y install git
-RUN ln -s /usr/local/php/bin/pecl /usr/bin/ && \
-	ln -s /usr/local/php/sbin/php-fpm /usr/bin/	
 
 ADD libgearman.so.8 /usr/local/lib/
 ADD ext.tar.gz /usr/local/php/lib/php/extensions/no-debug-non-zts-20160303/
@@ -23,9 +21,6 @@ RUN echo "extension=msgpack.so" >> "$PHP_INI_FILE" && \
 	echo "extension=phalcon.so" >> "$PHP_INI_FILE" && \
 	echo "extension=tideways.so" >> "$PHP_INI_FILE" && \
 	echo "extension=gearman.so" >> "$PHP_INI_FILE"
-
-# fix fpm 
-RUN useradd www && cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf 
 
 ADD ./run.sh /run.sh
 RUN chmod +x /run.sh
