@@ -102,6 +102,27 @@ docker run -d --name yphp -p 80:80 -p 9000:9000 \
 	php71-fpm-centos68
 ```
 
+>注意：由于这里覆盖了php.ini，所以想要开启第三方扩展的话，想要提前在php.ini里追加：
+```
+extension=redis.so
+extension=swoole.so
+extension=yar.so
+extension=yaconf.so
+extension=phalcon.so
+extension=seaslog.so
+extension=gearman.so
+extension=mongodb.so
+extension=tideways.so
+extension=protobuf.so
+extension=msgpack.so
+```
+
+或者启动后追加然后重启容器里的php-fpm：
+``` bash
+docker exec 容器ID killall php-fpm
+docker exec 容器ID php-fpm
+```
+
 4、如果不需要一开始就运行服务，想进入容器自行启动，可以直接进入容器：
 ``` bash
 docker run -it --name yphp -v /work/:/work/ php71-fpm-centos68 /bin/bash

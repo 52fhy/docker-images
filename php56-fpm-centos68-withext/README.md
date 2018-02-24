@@ -19,7 +19,7 @@
 - phpredis 3.0.0
 - yar 2.0.2
 - yac 0.9.2
-- phpalcon 3.3.1
+- phalcon 3.3.1
 - xhprof_tideways 4.1.5
 - msgpack 0.5.7
 - protobuf
@@ -100,6 +100,27 @@ docker run -d --name yphp -p 80:80 -p 9000:9000 \
 	-v "/work/yphp/nginx/conf/vhost/":/usr/local/nginx/conf/vhost/  \
 	-v "/work/yphp/nginx/logs/":/usr/local/nginx/logs/  \
 	php56-fpm-centos68
+```
+
+>注意：由于这里覆盖了php.ini，所以想要开启第三方扩展的话，想要提前在php.ini里追加：
+```
+extension=redis.so
+extension=swoole.so
+extension=yar.so
+extension=yac.so
+extension=phalcon.so
+extension=seaslog.so
+extension=gearman.so
+extension=mongodb.so
+extension=tideways.so
+extension=protobuf.so
+extension=msgpack.so
+```
+
+或者启动后追加然后重启容器里的php-fpm：
+``` bash
+docker exec 容器ID killall php-fpm
+docker exec 容器ID php-fpm
 ```
 
 4、如果不需要一开始就运行服务，想进入容器自行启动，可以直接进入容器：
