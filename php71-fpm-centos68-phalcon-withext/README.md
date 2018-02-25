@@ -49,6 +49,18 @@ docker build -t php71-fpm-centos68-phalcon-withext .
 
 编译需要30分钟左右。实际视机器性能而定。
 
+>注：因为父镜像是[`php71-fpm-centos68`](https://github.com/52fhy/docker-images/tree/master/php71-fpm-centos68)故需要先编译生成该镜像。已存在则忽略。
+
+也可以下载打包好的镜像文件ysphp.tar.gz (239M，密码: nged)，然后：
+```
+docker load --input ysphp.tar.gz
+```
+
+或者：
+```
+docker pull hub.c.163.com/jiancaigege/php71-fpm-centos68-phalcon-withext:latest
+```
+
 2、编译完成后可以创建容器了。默认会自动启动Nginx、php-fpm服务：
 
 ``` bash
