@@ -155,7 +155,7 @@ make install
 
 >注：php5.6只能使用2.5及以下版本xdebug。
 
-一般可以在pecl.php.net找到源码。例如：http://pecl.php.net/package/xdebug，编译方法差不多：
+一般可以在pecl.php.net找到源码。例如：http://pecl.php.net/package/xdebug 。编译方法差不多：
 ``` bash
 wget http://pecl.php.net/get/xdebug-2.5.5.tgz \
     && tar xzf xdebug-2.5.5.tgz && cd xdebug-2.5.5/ \
