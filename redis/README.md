@@ -30,14 +30,14 @@ Redis 是一个开源，基于内存的高性能 key-Value 数据库, 可用作�
 $ docker run --name some-redis -d redis
 ```
 
-这个镜像包含EXPOSE 6379 (Redis默认端口)，所以可以通过link容器的方式访问Redis(具体参考连接到Redis)
+这个镜像包含EXPOSE 6379 (Redis默认端口)，所以可以通过link容器的方式访问Redis。
 
 ## 启动Redis持久化功能
 ```
 $ docker run --name some-redis -d redis redis-server --appendonly yes
 ```
 
-当开启了Redis的持久化功能，Redis会将数据储存到 VOLUME /data，我们可以通过 `--volumes-from some-volume-container` 或者`-v /docker/host/dir:/data`参数，将数据保存到主机，具体参考docs.docker volumes
+当开启了Redis的持久化功能，Redis会将数据储存到 VOLUME /data，我们可以通过 `--volumes-from some-volume-container` 或者`-v /docker/host/dir:/data`参数，将数据保存到主机，具体参考https://docs.docker.com/engine/tutorials/dockervolumes/ 。
 
 关于更多Redis持久化功能请参考 http://redis.io/topics/persistence
 
@@ -53,7 +53,7 @@ $ docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
 
 ## 使用redis.conf配置文件
 
-可以创建Dockerfile包含redis.conf 例如
+可以创建[Dockerfile](https://docs.docker.com/engine/reference/builder/)包含redis.conf 例如
 ```
 FROM redis
 COPY redis.conf /usr/local/etc/redis/redis.conf
