@@ -152,6 +152,37 @@ docker load --input yphp.tar
 
 导出的镜像可以压缩以节约空间。
 
+6、增加PHP扩展
+有下面几种方法，只要编译出了.so文件就简单了。以演示xdebug为例：
+
+1) 如果已经编译好了.so文件，直接复制到挂载目录(例如`/work`)。使用`docker exec -it 容器ID /bin/bash`进入容器，通过`php-config`可以看到扩展所在目录，复制到该目录，修改php.ini，追加`zend_extension=xdebug.so`，重启php-fpm即可。
+
+>注：一般扩展都是`extension=xxx.so`，xdebug特殊。
+
+2) 需要先进入容器，使用`pecl install xdebug`自动编译生成.so文件。会自动复制到扩展目录。修改php.ini重启php-fpm生效。
+
+3) pecl如果提示找不到该扩展，则使用源码编译。例如：
+``` bash
+git clone https://github.com/xdebug/xdebug.git
+cd xdebug/
+git checkout xdebug_2_5
+phpize 
+./configure 
+make
+make install
+```
+
+>注：php5.6只能使用2.5及以下版本xdebug。
+
+一般可以在pecl.php.net找到源码。例如：http://pecl.php.net/package/xdebug，编译方法差不多：
+``` bash
+wget http://pecl.php.net/get/xdebug-2.5.5.tgz \
+    && tar xzf xdebug-2.5.5.tgz && cd xdebug-2.5.5/ \
+	&& phpize \
+    && ./configure \
+    && make && make install
+```
+
 
 
 
