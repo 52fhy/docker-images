@@ -1,11 +1,12 @@
 # Nginx
 
-官方仓库：https://registry.hub.docker.com/_/nginx/
+仓库官网：https://registry.hub.docker.com/_/nginx/
 
 获取：
 ```
 docker pull nginx
 docker pull daocloud.io/library/nginx
+docker pull hub.c.163.com/library/nginx
 ```
 
 版本：

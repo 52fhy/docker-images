@@ -1,15 +1,15 @@
 # CentOS
 
-官方镜像地址：https://hub.docker.com/_/centos/
+仓库官网：https://hub.docker.com/_/centos/
 
 https://github.com/docker-library/docs/tree/master/centos
 
 获取：
 ```
 docker pull centos
+docker pull daocloud.io/library/centos
+docker pull hub.c.163.com/library/centos
 ```
-
-## CentOS
 
 CentOS 是一个基于 RedHat Linux 提供的可自由使用源代码的企业级 Linux 发行版本。每个版本的 CentOS 都会获得十年的支持（通过安全更新方式）。 新版本的 CentOS 大约每两年发行一次，而每个版本的 CentOS 会定期（大概每六个月）更新一次，以便支持新的硬件。 这样，建立一个安全、低维护、稳定、高预测性、高重复性的 Linux 环境。 CentOS 是 Community Enterprise Operating System 的缩写。
 
