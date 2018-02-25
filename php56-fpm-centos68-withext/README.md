@@ -56,6 +56,11 @@ docker build -t php56-fpm-centos68-phalcon-withext .
 docker load --input php56-fpm-centos68-withext.tar.gz
 ```
 
+或者：
+```
+docker pull hub.c.163.com/jiancaigege/php56-fpm-centos68-withext
+```
+
 2、编译完成后可以创建容器了。默认会自动启动Nginx、php-fpm服务：
 
 ``` bash
