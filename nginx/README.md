@@ -19,7 +19,7 @@ docker pull hub.c.163.com/library/nginx
 - 1.7.10
 - 1.7.9
 - 1.13.2-perl
-...
+- ...
 
 
 ## 什么是 Nginx？

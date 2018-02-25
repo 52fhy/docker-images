@@ -18,7 +18,7 @@ docker pull hub.c.163.com/library/mysql
 - 5.5.44
 - 5.6.17
 - 5.6.21
-...
+- ...
 
 MySQL 由于其性能高、成本低、可靠性好，已经成为全球最流行的开源数据库软件，被广泛地被应用在 Internet 上的中小型网站中。随着 MySQL 的不断成熟，它也逐渐出现在更多大规模网站和应用上，比如 Facebook、Twitter 和 Yahoo! 等站点。
 

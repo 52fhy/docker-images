@@ -20,7 +20,7 @@ docker pull hub.c.163.com/library/redis
 - 4.0.0
 - 4.0.0-alpine
 - 2.8.6
-...
+- ...
 
 
 Redis 是一个开源，基于内存的高性能 key-Value 数据库, 可用作数据库，高速缓存和消息队列代理。它支持字符串、哈希表、列表、集合、有序集合，位图，hyperloglogs 等数据类型。内置复制、Lua脚本、LRU收回、事务以及不同级别磁盘持久化功能，同时通过 Redis Sentinel 提供高可用，通过 Redis Cluster 提供自动分区。
