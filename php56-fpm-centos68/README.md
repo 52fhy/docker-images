@@ -132,7 +132,8 @@ docker load --input yphp.tar
 
 导出的镜像可以压缩以节约空间。
 
-6、增加PHP扩展
+6、增加PHP扩展  
+
 有下面几种方法，只要编译出了.so文件就简单了。以演示xdebug为例：
 
 1) 如果已经编译好了.so文件，直接复制到挂载目录(例如`/work`)。使用`docker exec -it 容器ID /bin/bash`进入容器，通过`php-config`可以看到扩展所在目录，复制到该目录，修改php.ini，追加`zend_extension=xdebug.so`，重启php-fpm即可。
