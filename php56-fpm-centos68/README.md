@@ -32,7 +32,7 @@ php5.6的开发环境。包含：
 
 ``` bash
 cp -rf ../php70-fpm-centos68/*gz ./
-c
+docker build -t php56-fpm-centos68 .
 ```
 或者执行bulid.sh。
 
