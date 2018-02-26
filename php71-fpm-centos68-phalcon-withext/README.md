@@ -64,7 +64,7 @@ docker pull hub.c.163.com/jiancaigege/php71-fpm-centos68-phalcon-withext:latest
 2、编译完成后可以创建容器了。默认会自动启动Nginx、php-fpm服务：
 
 ``` bash
-docker run -d --name yphp -p 80:80 -p 9000:9000 -v /work/:/work/ php71-fpm-centos68
+docker run -d --name yphp -p 80:80 -p 9000:9000 -v /work/:/work/ php71-fpm-centos68-phalcon-withext
 docker ps
 ```
 
@@ -74,7 +74,7 @@ docker ps
 
 ```
 CONTAINER ID 	IMAGE    		COMMAND 	CREATED 		STATUS 			PORTS 										NAMES
-db13127cb76b php71-fpm-centos68  "/run.sh"   1 second ago  Up 1 second   0.0.0.0:80->80/tcp, 0.0.0.0:9000->9000/tcp   yphp
+db13127cb76b php71-fpm-centos68-phalcon-withext  "/run.sh"   1 second ago  Up 1 second   0.0.0.0:80->80/tcp, 0.0.0.0:9000->9000/tcp   yphp
 ```
 表名容器正则运行。如果`STATUS`是Exit(1)则说明容器异常退出，如果Exit(0)说明容器只执行了命令就立即退出了。
 可以使用`docker logs db13127cb76b` 查看容器具体退出情况。db13127cb76b是某个容器ID（CONTAINER ID）。
@@ -87,7 +87,7 @@ docker run -d --name yphp -p 80:80 -p 9000:9000 \
 	-v "/work/yphp/php/etc/":/usr/local/php/etc/  \
 	-v "/work/yphp/nginx/conf/":/usr/local/nginx/conf/  \
 	-v "/work/yphp/nginx/logs/":/usr/local/nginx/logs/  \
-	php71-fpm-centos68 
+	php71-fpm-centos68-phalcon-withext
 ```
 
 其中`/work/yphp`是本地宿主机的一个目录，里面包含php和nginx的配置，目录结构：
@@ -111,7 +111,7 @@ docker run -d --name yphp -p 80:80 -p 9000:9000 \
 	-v "/work/yphp/nginx/conf/nginx.conf":/usr/local/nginx/conf/nginx.conf  \
 	-v "/work/yphp/nginx/conf/vhost/":/usr/local/nginx/conf/vhost/  \
 	-v "/work/yphp/nginx/logs/":/usr/local/nginx/logs/  \
-	php71-fpm-centos68
+	php71-fpm-centos68-phalcon-withext
 ```
 
 >注意：由于这里覆盖了php.ini，所以想要开启第三方扩展的话，想要提前在php.ini里追加：
@@ -137,7 +137,7 @@ docker exec 容器ID php-fpm
 
 4、如果不需要一开始就运行服务，想进入容器自行启动，可以直接进入容器：
 ``` bash
-docker run -it --name yphp -v /work/:/work/ php71-fpm-centos68 /bin/bash
+docker run -it --name yphp -v /work/:/work/ php71-fpm-centos68-phalcon-withext /bin/bash
 ```
 
 退出容器使用exit。
@@ -149,7 +149,7 @@ docker run -it --name yphp -v /work/:/work/ php71-fpm-centos68 /bin/bash
 docker commit -m "create images" -a "52fhy"  db13127cb76b  php71-fpm-centos68:yphp_v1 
 
 # 导出镜像
-docker save -o yphp.tar php71-fpm-centos68:yphp_v1
+docker save -o yphp.tar php71-fpm-centos68-phalcon-withext:yphp_v1
 
 # 导入镜像
 docker load --input yphp.tar
@@ -186,6 +186,56 @@ wget http://pecl.php.net/get/xdebug-2.5.5.tgz \
     && make && make install
 ```
 
+7、compose一键启动
+
+docker-compose.yml
+```
+# development.yml
+version: '2'
+services:
+  php-fpm:
+    image: php71-fpm-centos68-phalcon-withext
+    restart: always
+    volumes:
+      - /work/:/work/
+      -"/work/yphp/php/etc/":/usr/local/php/etc/  
+      -"/work/yphp/nginx/conf/":/usr/local/nginx/conf/  
+      -"/work/yphp/nginx/logs/":/usr/local/nginx/logs/  
+    ports:
+      - 90:9000
+      - 80-90:80-90
+```
+
+然后：
+```
+compose up -d 
+```
+
+或者不使用镜像里的nginx：
+```
+version: '2'
+services:  
+  nginx:
+    image: daocloud.io/library/nginx:1.12.2-alpine
+    restart: always
+	links: 
+        - php-fpm:yphp71
+    volumes:
+      - /work/:/work/
+      -"/work/yphp/nginx/conf/":/usr/local/nginx/conf/  
+      -"/work/yphp/nginx/logs/":/usr/local/nginx/logs/  
+    ports:
+      - 80-90:80-90
+	  
+  php-fpm:
+    image: php71-fpm-centos68-phalcon-withext
+    restart: always
+    volumes:
+      - /work/:/work/
+      -"/work/yphp/php/etc/":/usr/local/php/etc/
+```
+
+注意：nginx容器由于使用了links，那么nginx配置文件里fastcgi_pass需要改成 yphp71:9000；php-fpm容器的php-fpm.d/www.conf里listen需要监听地址 0.0.0.0，而不是127.0.0.1。
 
 
 

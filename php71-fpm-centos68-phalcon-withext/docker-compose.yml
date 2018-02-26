@@ -6,10 +6,9 @@ services:
     restart: always
     volumes:
       - /work/:/work/
-      #- /work/dockerp/php71-fpm/nginx/conf/nginx.conf:/usr/local/nginx/conf/nginx.conf
-      #- /work/dockerp/php71-fpm/nginx/conf/vhosts/:/usr/local/nginx/conf/vhosts/
-      #- /work/dockerp/php71-fpm/nginx/data/:/var/log/nginx/
+      -"/work/yphp/php/etc/":/usr/local/php/etc/  \
+      -"/work/yphp/nginx/conf/":/usr/local/nginx/conf/  \
+      -"/work/yphp/nginx/logs/":/usr/local/nginx/logs/  \
     ports:
-      - 9001:9000
-      - 8002:80
-    command: ps -ef
+      - 90:9000
+      - 80:80
