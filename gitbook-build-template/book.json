@@ -1,0 +1,58 @@
+{
+  "title": "GitBook",
+  "description": "",
+  "author": "yujiancai",
+  "output.name": "site",
+  "language": "zh-hans",
+  "gitbook": "3.2.3",
+  "root": ".",
+  "structure": {
+    "readme": "introduction.md"
+  },
+  "links": {
+    "sidebar": {
+      "Home": "https://github.com/52fhy/"
+    }
+  },
+  "plugins": [
+    "-lunr",
+    "-search",
+    "anchors",
+    "theme-comscore",
+    "anchor-navigation-ex",
+    "search-pro",
+    "splitter",
+    "expandable-chapters-small",
+    "todo",
+    "edit-link",
+    "copy-code-button",
+    "rss",
+    "katex",
+    "tbfed-pagefooter"
+  ],
+  "pluginsConfig": {
+    "search-pro": {
+      "cutWordLib": "nodejieba",
+      "defineWord": ["gitbook-use"]
+    },
+    "anchor-navigation-ex": {
+      "isRewritePageTitle": true,
+      "isShowTocTitleIcon": true,
+      "tocLevel1Icon": "fa fa-hand-o-right",
+      "tocLevel2Icon": "fa fa-hand-o-right",
+      "tocLevel3Icon": "fa fa-hand-o-right"
+    },
+    "theme-default": {
+      "showLevel": false
+    },
+    "edit-link": {
+      "base": "https://github.com/52fhy/docker-images",
+      "label": "Edit This Page"
+    },
+    "tbfed-pagefooter": {
+      "copyright":"Copyright &copy 52fhy.com",
+      "modify_label": "该文件修订时间：",
+      "modify_format": "YYYY-MM-DD HH:mm:ss"
+    }
+  }
+}
