@@ -28,6 +28,7 @@
     "copy-code-button",
     "rss",
     "katex",
+    "lightbox",
     "tbfed-pagefooter"
   ],
   "pluginsConfig": {
