@@ -19,7 +19,7 @@ WORKDIR /home/build
 COPY . .
 RUN  gitbook build
 
-FROM nginx:1.13.0-alpine
+FROM daocloud.io/library/nginx:1.13.0-alpine
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /home/build/_book/ ./
 # COPY --from=builder /home/build/conf/nginx.conf /etc/nginx/conf.d/default.conf
