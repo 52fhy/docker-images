@@ -19,11 +19,10 @@ WORKDIR /home/build
 COPY . .
 RUN  gitbook build
 
-FROM hub.pf.xiaomi.com/yujiancai/nginx:1.13.0-alpine
+FROM nginx:1.13.0-alpine
 WORKDIR /usr/share/nginx/html
 COPY --from=builder /home/build/_book/ ./
 # COPY --from=builder /home/build/conf/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 ```
 
-上面是
